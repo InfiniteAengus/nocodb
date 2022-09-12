@@ -3,8 +3,10 @@ import { SqlUiFactory, UITypes, isVirtualCol } from 'nocodb-sdk'
 import type { ComputedRef, Ref } from 'vue'
 import { computed, useProject } from '#imports'
 
-export function useColumn(column: Ref<ColumnType | undefined>) {
-  const { project } = useProject()
+export function useColumn(column: Ref<ColumnType>) {
+  const { bases } = useProject()
+
+  const base = bases.value.find((b) => b.id === column.value.base_id)
 
   const uiDatatype: ComputedRef<UITypes> = computed(() => column.value?.uidt as UITypes)
 
@@ -12,9 +14,7 @@ export function useColumn(column: Ref<ColumnType | undefined>) {
     // kludge: CY test hack; column.value is being received NULL during attach cell delete operation
     return (column.value && isVirtualCol(column.value)) || !column.value
       ? null
-      : SqlUiFactory.create(
-          project.value?.bases?.[0]?.type ? { client: project.value.bases[0].type } : { client: 'mysql2' },
-        ).getAbstractType(column.value)
+      : SqlUiFactory.create(base?.type ? { client: base.type } : { client: 'mysql2' }).getAbstractType(column?.value)
   })
 
   const dataTypeLow = computed(() => column.value?.dt?.toLowerCase())

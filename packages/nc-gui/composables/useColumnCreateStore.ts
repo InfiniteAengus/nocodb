@@ -22,8 +22,7 @@ const columnToValidate = [UITypes.Email, UITypes.URL, UITypes.PhoneNumber]
 
 const [useProvideColumnCreateStore, useColumnCreateStore] = createInjectionState(
   (meta: Ref<TableType | undefined>, column: Ref<ColumnType | undefined>) => {
-    const { sqlUi } = useProject()
-
+    const { sqlUis } = useProject()
     const { $api } = useNuxtApp()
 
     const { getMeta } = useMetas()
@@ -32,7 +31,9 @@ const [useProvideColumnCreateStore, useColumnCreateStore] = createInjectionState
 
     const { $e } = useNuxtApp()
 
-    const isEdit = computed(() => !!column.value?.id)
+    const sqlUi = ref(meta.value?.base_id ? sqlUis.value[meta.value?.base_id] : sqlUis.value[0])
+
+    const isEdit = computed(() => !!column?.value?.id)
 
     const idType = null
 
