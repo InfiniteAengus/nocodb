@@ -39,7 +39,7 @@ const refTables = $computed(() => {
   }
 
   return meta?.columns
-    ?.filter((c: any) => c.uidt === UITypes.LinkToAnotherRecord && !c.system)
+    ?.filter((c: any) => c.uidt === UITypes.LinkToAnotherRecord && !c.system && c.base_id === meta?.base_id)
     .map((c: ColumnType) => ({
       col: c.colOptions,
       column: c,
