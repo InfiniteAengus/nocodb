@@ -76,3 +76,12 @@ export enum TabType {
   VIEW = 'view',
   AUTH = 'auth',
 }
+
+export enum DataSourcesSubTab {
+  New = 'New',
+  Metadata = 'Metadata',
+  ERD = 'ERD',
+  UIAcl = 'UI ACL',
+  Misc = 'Misc',
+  Edit = 'Edit',
+}

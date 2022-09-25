@@ -3,7 +3,7 @@ import type { LinkToAnotherRecordType, TableType } from 'nocodb-sdk'
 import { UITypes } from 'nocodb-sdk'
 import { ref, useGlobal, useMetas, useProject, watch } from '#imports'
 
-const { table } = defineProps<{ table?: TableType }>()
+const props = defineProps<{ table?: TableType; baseId?: string }>()
 
 const { includeM2M } = useGlobal()
 
@@ -20,7 +20,7 @@ const config = ref({
   showPkAndFk: true,
   showViews: false,
   showAllColumns: true,
-  singleTableMode: !!table,
+  singleTableMode: !!props.table,
   showMMTables: false,
   showJunctionTableNames: false,
 })
@@ -37,12 +37,12 @@ const loadMetaOfTablesNotInMetas = async (localTables: TableType[]) => {
 
 const populateTables = async () => {
   let localTables: TableType[] = []
-  if (table) {
+  if (props.table) {
     // if table is provided only get the table and its related tables
     localTables = projectTables.value.filter(
       (t) =>
-        t.id === table.id ||
-        table.columns?.find(
+        t.id === props.table.id ||
+        props.table.columns?.find(
           (column) =>
             column.uidt === UITypes.LinkToAnotherRecord &&
             (column.colOptions as LinkToAnotherRecordType)?.fk_related_model_id === t.id,
@@ -61,12 +61,14 @@ const populateTables = async () => {
         config.value.showMMTables ||
         (!config.value.showMMTables && !t.mm) ||
         // Show mm table if it's the selected table
-        t.id === table?.id,
+        t.id === props.table?.id,
     )
     .filter((t) => (!config.value.showViews && t.type !== 'view') || config.value.showViews)
 
   isLoading = false
 }
+
+const filteredTables = computed(() => tables.value.filter((t) => !props.baseId || t.base_id === props.baseId))
 
 watch(
   [config, metas],
@@ -110,7 +112,7 @@ watch(
     </div>
 
     <div v-else class="relative h-full">
-      <LazyErdFlow :tables="tables" :config="config" />
+      <LazyErdFlow :tables="filteredTables" :config="config" />
 
       <div
         class="absolute top-2 right-10 flex-col bg-white py-2 px-4 border-1 border-gray-100 rounded-md z-50 space-y-1 nc-erd-context-menu z-50"

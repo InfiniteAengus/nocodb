@@ -42,7 +42,7 @@ export function _advSettings(roleType, mode) {
     cy.get(`[data-menu-id="teamAndAuth"]`).should("exist");
     if (roleType === "owner")
       cy.get(`[data-menu-id="appStore"]`).should("exist");
-    cy.get(`[data-menu-id="projMetaData"]`).should("exist");
+    cy.get(`[data-menu-id="dataSources"]`).should("exist");
     cy.get(`[data-menu-id="audit"]`).should("exist");
 
     settingsPage.closeMenu();

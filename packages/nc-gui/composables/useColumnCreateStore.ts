@@ -22,7 +22,7 @@ const columnToValidate = [UITypes.Email, UITypes.URL, UITypes.PhoneNumber]
 
 const [useProvideColumnCreateStore, useColumnCreateStore] = createInjectionState(
   (meta: Ref<TableType | undefined>, column: Ref<ColumnType | undefined>) => {
-    const { sqlUis } = useProject()
+    const { sqlUis, isMysql: isMysqlFunc, isPg: isPgFunc, isMssql: isMssqlFunc } = useProject()
     const { $api } = useNuxtApp()
 
     const { getMeta } = useMetas()
@@ -34,6 +34,12 @@ const [useProvideColumnCreateStore, useColumnCreateStore] = createInjectionState
     const sqlUi = ref(meta.value?.base_id ? sqlUis.value[meta.value?.base_id] : Object.values(sqlUis.value)[0])
 
     const isEdit = computed(() => !!column?.value?.id)
+
+    const isMysql = computed(() => isMysqlFunc(meta.value?.base_id ? meta.value?.base_id : Object.keys(sqlUis.value)[0]))
+
+    const isPg = computed(() => isPgFunc(meta.value?.base_id ? meta.value?.base_id : Object.keys(sqlUis.value)[0]))
+
+    const isMssql = computed(() => isMssqlFunc(meta.value?.base_id ? meta.value?.base_id : Object.keys(sqlUis.value)[0]))
 
     const idType = null
 
@@ -246,6 +252,9 @@ const [useProvideColumnCreateStore, useColumnCreateStore] = createInjectionState
       isEdit,
       column,
       sqlUi,
+      isMssql,
+      isPg,
+      isMysql,
     }
   },
 )

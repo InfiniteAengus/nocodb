@@ -16,7 +16,7 @@ export class _settingsPage {
     // menu
     this.TEAM_N_AUTH = "teamAndAuth";
     this.APPSTORE = "appStore";
-    this.PROJ_METADATA = "projMetaData";
+    this.PROJ_METADATA = "dataSources";
     this.AUDIT = "audit";
 
     // submenu
