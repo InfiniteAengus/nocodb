@@ -242,7 +242,7 @@ const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
             <span class="text-gray-500 group-hover:(text-primary/100) flex-1 nc-add-new-table">{{ $t('tooltip.addTable') }}</span>
 
             <a-dropdown v-if="!isSharedBase" :trigger="['click']" overlay-class-name="nc-dropdown-import-menu" @click.stop>
-              <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 nc-import-menu" />
+              <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 nc-import-menu outline-0" />
 
               <template #overlay>
                 <a-menu class="!py-0 rounded text-sm">
@@ -348,7 +348,7 @@ const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
                           :trigger="['click']"
                           @click.stop
                         >
-                          <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100" />
+                          <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 outline-0" />
 
                           <template #overlay>
                             <a-menu class="!py-0 rounded text-sm">
@@ -396,7 +396,7 @@ const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
                         overlay-class-name="nc-dropdown-import-menu"
                         @click.stop
                       >
-                        <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 nc-import-menu" />
+                        <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 nc-import-menu outline-0" />
 
                         <template #overlay>
                           <a-menu class="!py-0 rounded text-sm">
@@ -505,7 +505,7 @@ const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
                             :trigger="['click']"
                             @click.stop
                           >
-                            <MdiMenuIcon class="transition-opacity opacity-0 group-hover:opacity-100" />
+                            <MdiDotsVertical class="transition-opacity opacity-0 group-hover:opacity-100 outline-0" />
 
                             <template #overlay>
                               <a-menu class="!py-0 rounded text-sm">
