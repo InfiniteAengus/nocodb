@@ -29,13 +29,15 @@ const [setup, use] = useInjectionState(() => {
       if (routeName.startsWith('projectType-projectId-index-index-type-title-viewTitle') && tables.value.length) {
         const tab: TabItem = { type: route.params.type as TabType, title: route.params.title as string }
 
-        const currentTable = tables.value.find((t) => t.title === tab.title)
+        const currentTable = tables.value.find((t) => t.id === tab.title || t.title === tab.title)
 
         if (!currentTable) return -1
 
         tab.id = currentTable.id
 
         let index = tabs.value.findIndex((t) => t.id === tab.id)
+
+        tab.title = currentTable.title
 
         if (index === -1) {
           tabs.value.push(tab)
@@ -107,13 +109,9 @@ const [setup, use] = useInjectionState(() => {
   function navigateToTab(tab: TabItem) {
     switch (tab.type) {
       case TabType.TABLE:
-        return navigateTo(
-          `/${projectType}/${route.params.projectId}/table/${tab?.title}${tab.viewTitle ? `/${tab.viewTitle}` : ''}`,
-        )
+        return navigateTo(`/${projectType}/${route.params.projectId}/table/${tab?.id}${tab.viewTitle ? `/${tab.viewTitle}` : ''}`)
       case TabType.VIEW:
-        return navigateTo(
-          `/${projectType}/${route.params.projectId}/view/${tab?.title}${tab.viewTitle ? `/${tab.viewTitle}` : ''}`,
-        )
+        return navigateTo(`/${projectType}/${route.params.projectId}/view/${tab?.id}${tab.viewTitle ? `/${tab.viewTitle}` : ''}`)
       case TabType.AUTH:
         return navigateTo(`/${projectType}/${route.params.projectId}/auth`)
     }
@@ -127,10 +125,10 @@ const [setup, use] = useInjectionState(() => {
 
       Object.assign(tab, newTabItemProps)
 
-      if (isActive && tab.title)
+      if (isActive && tab.id)
         router.replace({
           params: {
-            title: tab.title,
+            title: tab.id,
           },
         })
     }
