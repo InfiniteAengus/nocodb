@@ -184,6 +184,7 @@ export async function tableCreate(req: Request<any, any, TableReqType>, res) {
 
   await Audit.insert({
     project_id: project.id,
+    base_id: base.id,
     op_type: AuditOperationTypes.TABLE,
     op_sub_type: AuditOperationSubTypes.CREATED,
     user: (req as any)?.user?.email,
@@ -354,6 +355,7 @@ export async function tableDelete(req: Request, res: Response) {
 
   await Audit.insert({
     project_id: project.id,
+    base_id: base.id,
     op_type: AuditOperationTypes.TABLE,
     op_sub_type: AuditOperationSubTypes.DELETED,
     user: (req as any)?.user?.email,
@@ -369,6 +371,11 @@ export async function tableDelete(req: Request, res: Response) {
 const router = Router({ mergeParams: true });
 router.get(
   '/api/v1/db/meta/projects/:projectId/tables',
+  metaApiMetrics,
+  ncMetaAclMw(tableList, 'tableList')
+);
+router.get(
+  '/api/v1/db/meta/projects/:projectId/:baseId/tables',
   metaApiMetrics,
   ncMetaAclMw(tableList, 'tableList')
 );

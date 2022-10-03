@@ -26,7 +26,7 @@ import {
 } from '#imports'
 import { TabType } from '~/lib'
 
-const { quickImportType, projectTemplate, importData, importColumns, importOnly, maxRowsToParse } = defineProps<Props>()
+const { quickImportType, projectTemplate, importData, importColumns, importOnly, maxRowsToParse, baseId } = defineProps<Props>()
 
 const emit = defineEmits(['import'])
 
@@ -39,6 +39,7 @@ interface Props {
   importColumns: any[]
   importOnly: boolean
   maxRowsToParse: number
+  baseId: string
 }
 
 interface Option {
@@ -344,7 +345,7 @@ async function importTemplate() {
     try {
       isImporting.value = true
 
-      const tableName = meta.value?.title
+      const tableId = meta.value?.id
 
       // only one file is allowed currently
       const data = importData[Object.keys(importData)[0]]
@@ -385,7 +386,7 @@ async function importTemplate() {
           }, {}),
         )
 
-        await $api.dbTableRow.bulkCreate('noco', projectName, tableName!, batchData)
+        await $api.dbTableRow.bulkCreate('noco', projectName, tableId!, batchData)
 
         importingTip.value = `Importing data to ${projectName}: ${progress}/${total} records`
 
@@ -440,7 +441,7 @@ async function importTemplate() {
             }
           }
         }
-        const tableMeta = await $api.dbTable.create(project?.value?.id as string, {
+        const tableMeta = await $api.base.tableCreate(project?.value?.id as string, baseId as string, {
           table_name: table.ref_table_name,
           // leave title empty to get a generated one based on ref_table_name
           title: '',
@@ -474,7 +475,7 @@ async function importTemplate() {
                 for (let i = 0; i < data.length; i += offset) {
                   importingTip.value = `Importing data to ${projectName}: ${progress}/${total} records`
                   const batchData = remapColNames(data.slice(i, i + offset), tableMeta.columns)
-                  await $api.dbTableRow.bulkCreate('noco', projectName, tableMeta.title, batchData)
+                  await $api.dbTableRow.bulkCreate('noco', projectName, tableMeta.id, batchData)
                   progress += batchData.length
                 }
               }

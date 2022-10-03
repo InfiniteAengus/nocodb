@@ -93,6 +93,7 @@ export default (router: Router, clients: { [id: string]: Socket }) => {
         id: req.query.id,
         ...(syncSource?.details || {}),
         projectId: syncSource.project_id,
+        baseId: syncSource.base_id,
         authToken: token,
         baseURL,
       });

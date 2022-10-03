@@ -24,6 +24,7 @@ import {
 interface Props {
   modelValue: boolean
   importType: 'csv' | 'json' | 'excel'
+  baseId: string
   importOnly?: boolean
 }
 
@@ -304,6 +305,7 @@ const customReqCbk = (customReqArgs: { file: any; onSuccess: () => void }) => {
           :import-only="importOnly"
           :quick-import-type="importType"
           :max-rows-to-parse="importState.parserConfig.maxRowsToParse"
+          :base-id="baseId"
           class="nc-quick-import-template-editor"
           @import="handleImport"
         />
